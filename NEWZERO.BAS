@@ -5,7 +5,7 @@ DEFINT I-N: DEFDBL A-H, O-Z
   PRINT "*                T.R.CHANDRUPALTA              *"
   PRINT "************************************************"
   INPUT "INTERVAL A,B "; X1, X2
-  EPS = 1E-10: DLT = .00001: NFG = 0
+  EPS = 1E-10: DLT = .00001: NFV = 0
   CALL GETFUN(X1, F1, NFV)
   CALL GETFUN(X2, F2, NFV)
   T = .5
@@ -17,7 +17,7 @@ DO
     X3 = X1: X1 = X
     F3 = F1: F1 = F
   ELSE
-    X3 = X2: X2 = X1: X1 = X1
+    X3 = X2: X2 = X1: X1 = X
     F3 = F2: F2 = F1: F1 = F
   END IF
 '---- Identify the One that Approximates Zero ----'
@@ -29,14 +29,14 @@ DO
   TL = TOL / ABS(X2 - X1)
   IF TL > .5 OR FM = 0 THEN EXIT DO
   '---- If Inverse Quadratic Interpolation Holds, Use it ----
-  X1 = (X1 - X2) / (X3 - X2)
+  XI = (X1 - X2) / (X3 - X2)
   PH = (F1 - F2) / (F3 - F2)
-  FL = (1 - SQR(1 - X1)): FH = SQR(XI)
+  FL = (1 - SQR(1 - XI)): FH = SQR(XI)
   IF FL < PH AND PH < FH THEN
     AL = (X3 - X1) / (X2 - X1)
     A = F1 / (F2 - F1): B = F3 / (F2 - F3)
     C = F1 / (F3 - F1): D = F2 / (F3 - F2)
-    T + A * B + C * D * AL
+    T = A * B + C * D * AL
   ELSE
     T = .5
   END IF
@@ -48,7 +48,7 @@ LOOP
   PRINT "F = "; FM
   PRINT "NFV = "; NFV
   END
-SUB GETFUN(X, F< NFV)
+SUB GETFUN(X, F, NFV)
 NFV = NFV + 1
 F = X * (X * X - 2) - 5
 END SUB
